@@ -448,35 +448,35 @@ const Footer = ({ onNavigate, onGoToBlog }: { onNavigate: (id: string) => void, 
       </div>
       {/* Link-uri Navigare */}
       <div className="flex flex-col items-center md:items-start text-center md:text-left">
-        <h4 className="text-xl font-bold border-b border-white/10 pb-4">Navigare</h4>
+        <h4 className="text-xl font-bold border-b border-white/10 mb-8">Navigare</h4>
         <ul className="space-y-2 font-medium">
           <li>
-            <button onClick={() => onNavigate('acasa')} className="text-gray-400 hover:text-[#e8b304] transition-colors text-sm text-left">
+            <button onClick={() => onNavigate('acasa')} className="text-gray-400 hover:text-[#e8b304] transition-colors text-m text-left">
               Acasă
             </button>
           </li>
           <li>
-            <button onClick={() => onNavigate('servicii')} className="text-gray-400 hover:text-[#e8b304] transition-colors text-sm text-left">
+            <button onClick={() => onNavigate('servicii')} className="text-gray-400 hover:text-[#e8b304] transition-colors text-m text-left">
               Servicii
             </button>
           </li>
           <li>
-            <button onClick={() => onNavigate('de-ce-noi')} className="text-gray-400 hover:text-[#e8b304] transition-colors text-sm text-left">
+            <button onClick={() => onNavigate('de-ce-noi')} className="text-gray-400 hover:text-[#e8b304] transition-colors text-m text-left">
               De ce noi?
             </button>
           </li>
           <li>
-            <button onClick={() => onNavigate('proces')} className="text-gray-400 hover:text-[#e8b304] transition-colors text-sm text-left">
+            <button onClick={() => onNavigate('proces')} className="text-gray-400 hover:text-[#e8b304] transition-colors text-m text-left">
               Proces
             </button>
           </li>
           <li>
-            <button onClick={onGoToBlog} className="text-gray-400 hover:text-[#e8b304] transition-colors text-sm text-left">
+            <button onClick={onGoToBlog} className="text-gray-400 hover:text-[#e8b304] transition-colors text-m text-left">
               Blog
             </button>
           </li>
           <li>
-            <button onClick={() => onNavigate('contact')} className="text-gray-400 hover:text-[#e8b304] transition-colors text-sm text-left">
+            <button onClick={() => onNavigate('contact')} className="text-gray-400 hover:text-[#e8b304] transition-colors text-m text-left">
               Contact
             </button>
           </li>
