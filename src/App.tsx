@@ -19,6 +19,8 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ImageWithFallback } from './components/figma/ImageWithFallback';
+import emailjs from '@emailjs/browser';
+import logo from '../assets/logo.png';
 
 // --- Data ---
 
@@ -252,33 +254,63 @@ const WhyUs = () => {
   );
 };
 
-const Process = () => (
-  <section id="proces" className="py-12 bg-gray-50">
-    <div className="max-w-6xl mx-auto px-2 sm:px-4 lg:px-6">
-      <div className="text-center mb-10">
-        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">Procesul de Lucru</h2>
-        <p className="text-gray-600">Simplitate și eficiență în 4 pași simpli</p>
-      </div>
-      <div className="relative">
-        <div className="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-gray-200 -translate-y-1/2 z-0" />
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {['Contact', 'Audit', 'Ofertare', 'Implementare'].map((step, index) => (
-            <div key={index} className="relative z-10 flex flex-col items-center text-center">
-              <div 
-                className="w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl font-bold mb-6 border-4 border-white shadow-md"
-                style={{ backgroundColor: '#0a6494' }}
-              >
-                {index + 1}
+const Process = () => {
+  const steps = [
+    {
+      title: "Primul Contact",
+      desc: "Ne transmiți nevoile tale, iar noi stabilim o consultanță gratuită pentru a ne cunoaște."
+    },
+    {
+      title: "Audit & Evaluare",
+      desc: "Analizăm situația tehnică și financiară a imobilului pentru a identifica punctele de optimizare."
+    },
+    {
+      title: "Ofertă Personalizată",
+      desc: "Elaborăm o propunere transparentă, adaptată nevoilor asociației tale, fără costuri ascunse."
+    },
+    {
+      title: "Implementare",
+      desc: "Preluăm administrarea și integrăm imobilul în platforma digitală pentru acces instant la date."
+    }
+  ];
+
+  return (
+    <section id="proces" className="py-20 bg-gray-50 dark:bg-slate-800 transition-colors">
+      <div className="max-w-6xl mx-auto px-4 lg:px-6">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">Procesul de Lucru</h2>
+          <p className="text-gray-600 mb-8 dark:text-slate-400">Simplitate și eficiență în 4 pași simpli pentru liniștea asociației tale</p>
+        </div>
+        
+        <div className="relative"> 
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12">
+            {steps.map((step, index) => (
+              <div key={index} className="relative mb-8 z-10 flex flex-col items-center text-center group">
+                {/* Cercul cu numărul pasului */}
+                <div 
+                  className="w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl font-bold mb-6 border-4 border-white dark:border-slate-800 shadow-md transition-transform group-hover:scale-110"
+                  style={{ backgroundColor: '#0a6494' }}
+                >
+                  {index + 1}
+                </div>
+                
+                {/* Container pentru text cu margine de sus (mt-2.5 corespunde la 10px) pentru distanțare față de axa liniei */}
+                <div className="mt-[10px]">
+                  <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">
+                    {step.title}
+                  </h3>
+                  <p className="text-gray-600 dark:text-slate-400 text-m leading-relaxed px-4">
+                    {step.desc}
+                  </p>
+                </div>
               </div>
-              <h3 className="text-xl font-bold mb-3 text-gray-900">{step}</h3>
-              <p className="text-gray-600 text-sm">Pasul esențial pentru succesul colaborării.</p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 const Testimonials = () => (
   <section id="testimoniale" className="py-12 bg-white">
@@ -305,12 +337,46 @@ const Testimonials = () => (
 );
 
 const Contact = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '', service: 'administrare', message: '' });
+  const [formData, setFormData] = useState({ 
+    name: '', 
+    email: '', 
+    phone: '', 
+    service: 'administrare', 
+    message: '' 
+  });
+  const [isSending, setIsSending] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    alert('Mesajul a fost trimis cu succes! Vă vom contacta în cel mai scurt timp.');
-    setFormData({ name: '', email: '', phone: '', service: 'administrare', message: '' });
+    setIsSending(true);
+
+    // Parametrii trebuie să se potrivească cu {{variabilele}} din template-ul EmailJS
+    const templateParams = {
+      from_name: formData.name,
+      from_email: formData.email,
+      phone: formData.phone,
+      selected_service: formData.service,
+      message: formData.message,
+    };
+
+    emailjs.send(
+      'service_v8qi8uu', // Înlocuiește cu Service ID-ul tău
+      'template_qh5tcrt', // Înlocuiește cu Template ID-ul tău
+      templateParams,
+      'OUam8HywJZQ_7usM8' // Înlocuiește cu Public Key-ul tău
+    )
+    .then((response) => {
+       console.log('SUCCESS!', response.status, response.text);
+       alert('Mesajul a fost trimis! Veți fi contactat în cel mai scurt timp.');
+       setFormData({ name: '', email: '', phone: '', service: 'administrare', message: '' });
+    })
+    .catch((err) => {
+       console.error('FAILED...', err);
+       alert('A apărut o eroare la trimitere. Vă rugăm să ne contactați telefonic.');
+    })
+    .finally(() => {
+      setIsSending(false);
+    });
   };
 
   return (
@@ -344,8 +410,8 @@ const Contact = () => {
                 </div>
               </div>
 
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full flex items-center justify-center bg-blue-50 text-[#0a6494]">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 shrink-0 rounded-full flex items-center justify-center bg-blue-50 text-[#0a6494]">
                   <MapPin size={24} />
                 </div>
                 <div>
@@ -441,10 +507,17 @@ const Footer = ({ onNavigate, onGoToBlog }: { onNavigate: (id: string) => void, 
   <footer className="bg-gray-900 text-white py-20">
     <div className="max-w-6xl mx-auto px-8 mb-10 sm:px-4 lg:px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
       <div className="col-span-1 flex flex-col items-center md:items-start text-center md:text-left">
+        <div className="shrink-0">
+          <img 
+            src={logo} 
+            alt="AdExpert Logo" 
+            className="h-12 w-12 md:h-16 md:w-16 object-contain" 
+          />
+        </div>
         <span className="text-3xl font-bold mb-8 block">
           Ad<span style={{ color: '#e8b304' }}>Expert</span>
         </span>
-        <p className="text-gray-400">Expertiză în administrarea imobilelor și managementul comunităților rezidențiale.</p>
+        <p className="text-gray-400 text-m">Expertiză în administrarea imobilelor și managementul comunităților rezidențiale.</p>
       </div>
       {/* Link-uri Navigare */}
       <div className="flex flex-col items-center md:items-start text-center md:text-left">
@@ -495,8 +568,8 @@ const Footer = ({ onNavigate, onGoToBlog }: { onNavigate: (id: string) => void, 
       <div className="flex flex-col items-center md:items-start text-center md:text-left">
         <h4 className="text-xl font-bold mb-8">Legal</h4>
         <div className="flex flex-col gap-3">
-          <a href="https://anpc.ro/" target="_blank" className="text-sm font-bold bg-white/10 p-3 rounded-lg text-center">ANPC</a>
-          <a href="https://ec.europa.eu/consumers/odr/" target="_blank" className="text-sm font-bold bg-white/10 p-3 rounded-lg text-center">SOL</a>
+          <a href="https://anpc.ro/" target="_blank" className="text-sm font-bold bg-white/10 px-8 py-3 rounded-lg text-center">ANPC</a>
+          <a href="https://ec.europa.eu/consumers/odr/" target="_blank" className="text-sm font-bold bg-white/10 px-8 py-3 rounded-lg text-center">SOL</a>
         </div>
       </div>
     </div>
@@ -641,8 +714,18 @@ export default function App() {
     <div className="min-h-screen bg-white font-sans selection:bg-[#0a6494]/20 selection:text-[#0a6494]">
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md shadow-md">
         <div className="max-w-6xl mx-auto px-4 sm:px-4 lg:px-6 h-20 flex justify-between items-center">
-          <div className="cursor-pointer" onClick={() => { setView('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
-            <span className="text-3xl font-bold tracking-tighter" style={{ color: '#0a6494' }}>
+          <div 
+            className="flex items-center gap-2 cursor-pointer group" 
+            onClick={() => { setView('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+          >
+            <div className="flex items-center justify-center">
+              <img 
+                src={logo} 
+                alt="AdExpert Logo" 
+                className="h-12 w-12 md:h-16 md:w-16 object-contain transition-transform group-hover:scale-105" 
+              />
+            </div>
+            <span className="text-3xl md:text-3xl font-bold tracking-tighter leading-none flex items-center" style={{ color: '#0a6494' }}>
               Ad<span style={{ color: '#e8b304' }}>Expert</span>
             </span>
           </div>
