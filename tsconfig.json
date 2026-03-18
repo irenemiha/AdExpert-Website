@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "types": ["vite/client"],
+    
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    
+    "jsx": "react-jsx" // Asigură-te că ai și asta pentru React 17+
+  }
+}

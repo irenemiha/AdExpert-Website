@@ -360,10 +360,10 @@ const Contact = () => {
     };
 
     emailjs.send(
-      'service_v8qi8uu', // Înlocuiește cu Service ID-ul tău
-      'template_qh5tcrt', // Înlocuiește cu Template ID-ul tău
+      import.meta.env.VITE_EMAILJS_SERVICE_ID,
+      import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
       templateParams,
-      'OUam8HywJZQ_7usM8' // Înlocuiește cu Public Key-ul tău
+      import.meta.env.VITE_EMAILJS_PUBLIC_KEY
     )
     .then((response) => {
        console.log('SUCCESS!', response.status, response.text);
