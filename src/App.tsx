@@ -406,7 +406,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <p className="text-sm text-gray-500 font-medium uppercase tracking-wider">Email</p>
-                  <p className="text-lg font-bold text-gray-900">adexpert2020@gmail.com</p>
+                  <p className="text-lg font-bold text-gray-900">contact@adexpert.ro</p>
                 </div>
               </div>
 
@@ -560,7 +560,7 @@ const Footer = ({ onNavigate, onGoToBlog }: { onNavigate: (id: string) => void, 
         <h4 className="text-xl font-bold mb-8">Contact</h4>
         <div className="space-y-4">
           <div className="flex items-center gap-3 text-sm"><Phone size={18} className="text-[#e8b304]" /> +40 721 578 799</div>
-          <div className="flex items-center gap-3 text-sm"><Mail size={18} className="text-[#e8b304]" /> adexpert2020@gmail.com</div>
+          <div className="flex items-center gap-3 text-sm"><Mail size={18} className="text-[#e8b304]" /> contact@adexpert.ro</div>
           <div className="flex items-center gap-3 text-sm"><MapPin size={18} className="text-[#e8b304]" /> București, România</div>
         </div>
       </div>
