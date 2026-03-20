@@ -359,20 +359,34 @@ const Contact = () => {
       message: formData.message,
     };
 
-    emailjs.send(
+    const autoReplyParams = {
+      user_name: formData.name,      // {{user_name}} în HTML
+      user_email: formData.email,    // {{user_email}} în HTML (Adresa destinatarului)
+      service_type: formData.service, // {{service_type}} în HTML
+    };
+
+    const sendAdminMail = emailjs.send(
       import.meta.env.VITE_EMAILJS_SERVICE_ID,
       import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
       templateParams,
       import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-    )
-    .then((response) => {
-       console.log('SUCCESS!', response.status, response.text);
-       alert('Mesajul a fost trimis! Veți fi contactat în cel mai scurt timp.');
+    );
+
+    const sendAutoReply = emailjs.send(
+      import.meta.env.VITE_EMAILJS_SERVICE_ID,
+      'template_fif8n1o',
+      autoReplyParams,
+      import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+    );
+    
+    Promise.all([sendAdminMail, sendAutoReply])
+    .then(() => {
+       alert('Solicitarea a fost trimisă! Verificați și e-mailul pentru confirmare.');
        setFormData({ name: '', email: '', phone: '', service: 'administrare', message: '' });
     })
     .catch((err) => {
-       console.error('FAILED...', err);
-       alert('A apărut o eroare la trimitere. Vă rugăm să ne contactați telefonic.');
+       console.error('Eroare EmailJS:', err);
+       alert('Eroare la trimitere. Vă rugăm să ne contactați direct la telefon.');
     })
     .finally(() => {
       setIsSending(false);
